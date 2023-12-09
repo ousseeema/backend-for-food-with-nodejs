@@ -8,12 +8,13 @@ preget = (model) =>
 
   let  Query = {...req.query}
   const removeLst = ["select", "sort"];
-  removeList.forEach(element => {
+  removeLst.forEach(element => {
     delete Query[element];
   });
 
    let strquery = JSON.stringify(Query);
-   strquery = strquery.replace("", match = `$${match}`);
+   strquery = strquery.replace(/\b(gt|gte|lt|lte|in)\b/g,
+   (match) => `$${match}`);
 
    query = model.find(JSON.parse(strquery));
 
@@ -26,9 +27,7 @@ preget = (model) =>
       const soretedfiled = req.query.sort.split(",").join(' ')
       query = query.sort(soretedfiled)
     }
-
-
-
+  
      const result = await query;
      res.preget=result;
      next();

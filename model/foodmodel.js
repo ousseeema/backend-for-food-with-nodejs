@@ -18,15 +18,10 @@ const foodModel = mongoose.Schema({
     minlength:[5 , "Please enter a valid description for the food "],
     trim : true ,
     unique: true ,
-
-
-  },
-  the_chef:{
-    type: String,
-    required:[true , "please enter the name of the chef "],
-    maxlength:[50, "please enter a valid name less than 50 characters "],
-    minlength:[6, "please enter a valid name more than 6 characters "],
-
+  }, 
+  user :{
+     type : mongoose.Schema.ObjectId,
+     ref: "user"
   },
   prix : {
     type : Number , 
