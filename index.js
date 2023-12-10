@@ -4,6 +4,7 @@ const app = express();
 
 const connectDB = require("./config/db");
 const foodrouter = require("./routes/foodroute")
+const userrouter = require('./routes/userroute')
 
 
 
@@ -13,6 +14,7 @@ const foodrouter = require("./routes/foodroute")
 
 
 app.use("/api/v0/food",foodrouter);
+app.use("/api/v0/user",userrouter);
 connectDB();
 const PORT = 2000;
 app.listen(PORT, ()=>{
