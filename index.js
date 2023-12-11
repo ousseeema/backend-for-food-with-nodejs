@@ -5,16 +5,18 @@ const app = express();
 const connectDB = require("./config/db");
 const foodrouter = require("./routes/foodroute")
 const userrouter = require('./routes/userroute')
+const authrouter = require('./routes/authroute')
+const errorhandler= require("./middleware/errorhandler")
 
 
 
 
-
-
-
+app.use(express.json());
 
 app.use("/api/v0/food",foodrouter);
 app.use("/api/v0/user",userrouter);
+app.use('/api/v0/auth',authrouter);
+app.use(errorhandler);
 connectDB();
 const PORT = 2000;
 app.listen(PORT, ()=>{

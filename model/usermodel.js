@@ -1,11 +1,11 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
-
+const jwt = require('jsonwebtoken')
 
 
 const user = mongoose.Schema({
    
-  name :{
+  name:{
     type: String ,
     required : [true , "enter your name"],
     trim: true,
@@ -48,13 +48,20 @@ const user = mongoose.Schema({
 
 });
 
-user.pre('save',async ()=>{
-  if(!user.isModified('password')){
-    next();
+user.pre('save',async function(next){
+  if(!this.isModified('password')){
+   next();
   }
-  const salt = bcrypt.genSalt(20);
+  const salt = await bcrypt.genSalt(20);
   this.password = await bcrypt.hash(this.password,salt);
 
 });
+user.methods.matchpassword = async function(password){
+  return await bcrypt.compare(this.password ,password);
+}
+user.methods.sign = function(){
+ return jwt.sign({id: this._id} ,"oussema", {expiresIn:"30d"})
+}
+
 
 module.exports = mongoose.model("user",user);

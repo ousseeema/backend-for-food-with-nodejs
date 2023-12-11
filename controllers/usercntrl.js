@@ -56,7 +56,7 @@ exports.getalluser = asynchandler(async(req, res, next)=>{
    }
   
   
-   if (req.user.role!= "admin" || req.user.id != userinfo.id){
+   if (req.user.role != "admin" || req.user.id != userinfo.id){
    return res.status(404).send({
     success : false ,
     message :'you are not authorized'
