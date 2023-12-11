@@ -1,6 +1,6 @@
 const asynchandler = require('../middleware/asynchandler')
 const usermodel = require("../model/usermodel");
-
+const sendmail= require('../utils/mailtraper')
 
 //register with email and password 
 exports.register= asynchandler(async(req, res, next)=>{
@@ -88,5 +88,38 @@ exports.getMe = asynchandler(async(req, res, next)=>{
 
 
 
-})
+});
 
+// post : forgot password
+// return reset token
+
+exports.forgotpassword = asynchandler(async(req, res, next)=>{
+
+ const {email }= req.body;
+ if(!email){
+  return res.status(401).send({
+    sccess: false,
+    message: "verify  your email",
+
+  })
+ }   
+
+ const user = await usermodel.findOne({email: email})
+
+
+ if(!user){
+  return res.status(401).send({
+    sccess: false,
+    message: "verify  your email",
+
+  });
+ }
+
+ const resettoken = await user.getresetToken();
+
+   
+
+
+
+
+})
