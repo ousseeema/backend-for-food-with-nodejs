@@ -7,7 +7,7 @@ const usermodel =require('../model/usermodel')
 const{getalluser,getuser,deleteuser,updateuser}=require('../controllers/usercntrl')
 
 
-router.route('/').get(preget,getalluser);
+router.route('/').get(preget(usermodel),getalluser);
 router.route('/:id').get(protect,getuser).delete(protect,deleteuser).put(protect,updateuser)
 
 

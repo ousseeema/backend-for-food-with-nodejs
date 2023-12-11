@@ -3,7 +3,7 @@ const asynchandler = require("../middleware/asynchandler");
 const jwt = require("jsonwebtoken")
 exports.protect = asynchandler(async(req, res, next)=>{
   let token ;
-  if(req.headers.authorization && req.headers.authorization.startWith("Bearer")){
+  if(req.headers.authorization && req.headers.authorization.startsWith("Bearer")){
    token = req.authorization.split(" ")[1];
    }
  
