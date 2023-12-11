@@ -14,16 +14,9 @@ exports.register= asynchandler(async(req, res, next)=>{
     password,
     role,
   });
-  console.log(user);
-
-
-  
-  
-
-
-
+ 
   const token =  user.sign();
- console.log(token);
+
  res.status(200).send({
   success: true , 
   message : "user have been registered",
@@ -79,7 +72,21 @@ exports.login = asynchandler(async(req, res, next)=>{
    })
 
 
+});
+
+
+// get : get current user 
+// return current user 
+
+exports.getMe = asynchandler(async(req, res, next)=>{
+ 
+  res.status(200).send({
+    success : true ,
+    message :" the current user is : " ,
+    user : res.preget
+  });
+
+
+
 })
-
-
 
