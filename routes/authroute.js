@@ -1,8 +1,8 @@
 const express = require('express');
 
 const router = express.Router();
-const {protect}= require("../middleware/preget");
-const usermodel =require('../model/usermodel');
+const protect= require("../middleware/preget");
+
 const {
 register,
 login,
@@ -14,6 +14,5 @@ router.route("/login").post(login);
 router.route("/getMe").get(protect,getMe)
 router.route('forgotpassword').post();
 router.route('/forgotpassword/:resettoken').post();
-
 
 module.exports = router;
