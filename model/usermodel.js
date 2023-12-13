@@ -68,6 +68,8 @@ user.methods.getresetToken =async function(){
     this.resettokenexpire = Date.now() + 10 * (60 * 1000);
    return resettoken;
   }
-
+user.methods.matchresettoken= async function(resettoken){
+ return await  crypto.verify(this.resettoken, resettoken)
+}
 
 module.exports = mongoose.model("user",user);

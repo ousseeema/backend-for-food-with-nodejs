@@ -6,13 +6,15 @@ const protect= require("../middleware/preget");
 const {
 register,
 login,
-getMe
+getMe,
+forgotpassword
 }= require('../controllers/authcontroller')
+
 
 router.route("/register").post(register);
 router.route("/login").post(login);
 router.route("/getMe").get(protect,getMe)
-router.route('forgotpassword').post();
+router.route('/forgotpassword').post(forgotpassword);
 router.route('/forgotpassword/:resettoken').post();
 
 module.exports = router;

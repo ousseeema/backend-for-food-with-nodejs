@@ -119,7 +119,7 @@ exports.forgotpassword = asynchandler(async(req, res, next)=>{
   const message =  {
     mailto : user.email,
     subject:"Your password has been reset",
-    text: 'use this token to reset your password'
+    text: `use this token to reset your password ${resettoken}`
   }
 
 
@@ -145,4 +145,45 @@ exports.forgotpassword = asynchandler(async(req, res, next)=>{
 
 })
 
+
+
+
+// post reset token 
+// verification si le token envoyer dans le req.body 
+//est egale a la reset token dans le user account in the data bas e$
+
+exports.resettoken = asynchandler(async(req, res, next)=>{
+         const{
+          newpassword ,
+          email
+         }  = req.body;
+         const {resettoken} = req.params.resettoken;
+ if(!email || !password){
+  return res.status(401).send({
+     sccess: false,
+     message: "verify  your coordinates",
+    })
+  }
+
+  const user = await usermodel.find({email:email}).select("+password")
+   if(!user){
+    return res.status(401).send({
+      sccess: false,
+      message: "verify  your coordinates",
+     });
+   }
+
+    const matchtoken= await user.matchresettoken(resettoken)
+  
+    if(!matchtoken || user.resettokenexpire < Date.now()){
+
+  return res.status(404).send({
+    success: fasle,
+    message : "inavalid reset token"
+  })}
+
+  
+
+
+})
 

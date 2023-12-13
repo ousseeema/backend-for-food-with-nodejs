@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer')
 
-const sendmail = async (options)  =>{
+const sendmail = async (options) =>{
 
   var transport = nodemailer.createTransport({
     host: "sandbox.smtp.mailtrap.io",
@@ -19,8 +19,8 @@ const sendmail = async (options)  =>{
   }
    
 
-  await transport.sendMail(message)
+  const info = await transport.sendMail(message)
 
 }
 
-exports.sendmail = sendmail;
+module.exports= sendmail;
