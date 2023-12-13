@@ -1,6 +1,6 @@
 const asynchandler = require("../middleware/asynchandler")
 const usermodel = require('../model/usermodel');
-
+const path = require("path");
 
 
 // Get : get all user 
@@ -117,6 +117,65 @@ res.status(200).send({
 
 })
 
+
+exports.uploadsphoto =asynchandler(async(req, rezs, next)=>{
+   
+   const file = req.files.file;
+
+  if(!file){
+    return res.status(404).send({
+      success : false,
+      message : "please upload a file "
+    });
+
+  }
+  if(!file.mimetype.startsWith('image')){
+    return res.status(404).send({
+      success : false,
+      message : "please upload a file type image png,jpg,jpeg ... "
+    });
+  }
+  if(file.size>1000000){
+    return res.status(404).send({
+      success : false,
+      message : "please upload a file less than 1mb "
+    });
+  }
+
+  file.name =`image_${req.user.id}${path.parse(req.files.file.name).ext}`
+  file.mv(`./images/private/user/${file.name}`)
+  const user = await usermodel.findByIdAndUpdate(req.user.id,{
+    photo : file.name,
+    
+  },
+  {
+    new: true,
+    runvalidators : true
+  });
+  if(!user){
+    return res.status(404).send({
+      success : false,
+      message : "error while uploading "
+    });
+  }
+
+  res.status(200).send({
+    success: true,
+    message:" done uploading  photo",
+  })
+
+
+
+
+  
+
+
+
+ 
+
+
+
+})
 
 
 

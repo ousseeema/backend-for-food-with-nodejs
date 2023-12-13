@@ -32,6 +32,10 @@ const user = mongoose.Schema({
     select : false,
 
   },
+  photo: {
+    type:String, 
+    default:"no-photo.png",
+  },
   role:{
     type: String,
     enum :["chef", "user", "admin"],
