@@ -2,6 +2,7 @@ const asynchandler = require('../middleware/asynchandler')
 const usermodel = require("../model/usermodel");
 const sendmail= require('../utils/mailtraper')
 const mailtraper = require('../utils/mailtraper')
+const crypto =require('crypto')
 //register with email and password 
 exports.register= asynchandler(async(req, res, next)=>{
    
@@ -125,6 +126,7 @@ exports.forgotpassword = asynchandler(async(req, res, next)=>{
 
   try {
    await  mailtraper(message);
+   user.save();
    res.status(200).send({
     success: true,
     message: "check your email for the reset token"
@@ -155,34 +157,50 @@ exports.forgotpassword = asynchandler(async(req, res, next)=>{
 exports.resettoken = asynchandler(async(req, res, next)=>{
          const{
           newpassword ,
-          email
+     
          }  = req.body;
-         const {resettoken} = req.params.resettoken;
- if(!email || !password){
-  return res.status(401).send({
+         const reset =  crypto.createHash("sha256").update(req.params.resettoken).digest("hex")
+ if(!newpassword){
+
+     return res.status(401).send({
      sccess: false,
      message: "verify  your coordinates",
-    })
+      })
   }
 
-  const user = await usermodel.find({email:email}).select("+password")
+  const user = await usermodel.findOne({
+    resettoken:reset ,
+    resettokenexpire:{$gte:Date.now()}
+  
+  }).select("+password")
    if(!user){
     return res.status(401).send({
       sccess: false,
-      message: "verify  your coordinates",
+      message: "verify  your token",
      });
    }
 
-    const matchtoken= await user.matchresettoken(resettoken)
+    
+     
   
-    if(!matchtoken || user.resettokenexpire < Date.now()){
-
-  return res.status(404).send({
-    success: fasle,
-    message : "inavalid reset token"
-  })}
 
   
+    user.password = newpassword;
+    user.resettoken = undefined;
+    user.resettokenexpire =undefined;
+     user.save({validateBeforeSave:true});
+     res.status(200).send({
+      success: true ,
+      message : "password has been reset",
+
+     })
+  
+   
+  
+
+
+
+
 
 
 })

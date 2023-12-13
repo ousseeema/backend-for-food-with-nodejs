@@ -63,13 +63,11 @@ user.methods.sign = function(){
  return jwt.sign({id: this._id} ,"oussema", {expiresIn:"30d"})
 }
 user.methods.getresetToken =async function(){
-   const resettoken = await crypto.randomBytes(10).toString('hex');
-   this.resettoken= await crypto.createHash('sha256').update(resettoken).digest('hex')
+   const resettoken1 = await crypto.randomBytes(10).toString('hex');
+   this.resettoken=  crypto.createHash('sha256').update(resettoken1).digest('hex')
     this.resettokenexpire = Date.now() + 10 * (60 * 1000);
-   return resettoken;
+   return resettoken1;
   }
-user.methods.matchresettoken= async function(resettoken){
- return await  crypto.verify(this.resettoken, resettoken)
-}
+
 
 module.exports = mongoose.model("user",user);
