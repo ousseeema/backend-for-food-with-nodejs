@@ -27,7 +27,7 @@ const errorhandler = (err,req, res, next) => {
   else{
     res.status(400).send({
       success : false ,
-      message: "error"
+      message: `error ${err.message}`
     })
   }
   

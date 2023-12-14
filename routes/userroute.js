@@ -2,7 +2,7 @@ const express = require('express')
 const router=  express.Router()
 
 const preget = require("../middleware/preget")
-const{protect , role} = require("../middleware/protect")
+const{protect} = require("../middleware/protect")
 const usermodel =require('../model/usermodel')
 const{getalluser,getuser,deleteuser,updateuser,uploadsphoto}=require('../controllers/usercntrl')
 

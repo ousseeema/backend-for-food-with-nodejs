@@ -8,15 +8,20 @@ const userrouter = require('./routes/userroute');
 const authrouter = require('./routes/authroute');
 const errorhandler= require("./middleware/errorhandler");
 const fileupload = require("express-fileupload");
-
-
-
+const helmet = require("helmet")
+const hpp = require("hpp")
+const mongo_sanitizer= require("express-mongo-sanitize")
 
 app.use(express.json());
 
 app.use("/api/v0/food",foodrouter);
 app.use("/api/v0/user",userrouter);
 app.use('/api/v0/auth',authrouter);
+app.use(helmet());
+app.use(hpp());
+app.use(mongo_sanitizer());
+
+
 app.use(errorhandler);
 app.use(fileupload());
 connectDB();

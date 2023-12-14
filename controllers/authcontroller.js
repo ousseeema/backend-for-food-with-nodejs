@@ -15,7 +15,7 @@ exports.register= asynchandler(async(req, res, next)=>{
     role,
   });
  
-  const token =  user.sign();
+  const token = await user.sign();
 
  res.status(200).send({
   success: true , 
@@ -51,7 +51,7 @@ exports.login = asynchandler(async(req, res, next)=>{
      });
    }
 
-   const passwordmatch = user.matchpassword(password);
+   const passwordmatch = await user.matchpassword(password);
 
 
    if(!passwordmatch){
@@ -80,10 +80,14 @@ exports.login = asynchandler(async(req, res, next)=>{
 
 exports.getMe = asynchandler(async(req, res, next)=>{
  
+   const user  = await usermodel.findOne({email : req.user.email})
+    
+    
+   
   res.status(200).send({
     success : true ,
     message :" the current user is : " ,
-    user : res.preget
+    user : user
   });
 
 

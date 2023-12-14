@@ -117,7 +117,8 @@ res.status(200).send({
 
 })
 
-
+//  uplodaing photo to the folder images/private/users/
+// then save it to corresponding user that uploads the photo
 exports.uploadsphoto =asynchandler(async(req, rezs, next)=>{
    
    const file = req.files.file;
@@ -151,6 +152,7 @@ exports.uploadsphoto =asynchandler(async(req, rezs, next)=>{
   {
     new: true,
     runvalidators : true
+
   });
   if(!user){
     return res.status(404).send({

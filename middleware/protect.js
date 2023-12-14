@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken")
 exports.protect = asynchandler(async(req, res, next)=>{
   let token ;
   if(req.headers.authorization && req.headers.authorization.startsWith("Bearer")){
-   token = req.authorization.split(" ")[1];
+   token = req.headers.authorization.split(" ")[1];
    }
  
 
@@ -16,10 +16,11 @@ exports.protect = asynchandler(async(req, res, next)=>{
 
     }
 
-    const decoded = jwt.verify(token,"oussema");
+   
     
     
    try {
+    const decoded = jwt.verify(token,"oussema");
     req.user = await usermodel.findById(decoded.id)
     next();
    } catch (err) {
@@ -30,20 +31,4 @@ exports.protect = asynchandler(async(req, res, next)=>{
    }
 
  
-});
-
-
-exports.role = (role)=> asynchandler(async(req, res, next)=>
-{
-
-  if(!(req.user.role === role)){
-   return res.status(403).send({
-    success : false ,
-    message: "you're not authorized"
-   });
-  }
-
-  next();
-
-
 });
